@@ -6,7 +6,34 @@
     <link rel="stylesheet" type="text/css" href="./styles.css">
   </head>
   <body>
+    <section class="sidebar">
+      <h1>IdeaBox</h1>
+      <h2>Filter Starred Ideas</h2>
+      <button type="button" class="show-favorite">Show Starred Ideas</button>
+    </section>
+    <section class="idea-form">
+      <label for="title-input">Title</label>
+      <input type="text" class="title-input" name="title-input">
+      <label for="body-input">Body</label>
+      <input type="text" class="body-input" name="body-input">
+      <button type="button" name="save-button" class="save-button">Save</button>
+      <input type="text" class="search-idea" placeholder="Search ideas">
+    </section>
+    <section class="idea-grid">
+      <article class="idea-container">
+        <span class="favorite-delete">
+          <button type="button" name="button" class="star"></button>
+          <button type="button" name="button" class="delete"></button>
+        </span>
+        <p class="idea-title">Idea Title</p>
+        <p class="idea-body">Idea body. Dont ever play yourself. Every chance I get, I water the plants, lion!</p>
+        <span class="comment">
+          <button type="button" name="comment-button" class="comment-button"></button>
+          <label for="comment-button"></label>
+        </span>
+      </article>
 
+    </section>
     <script src="./src/main.js"></script>
   </body>
 </html>
