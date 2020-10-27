@@ -1,0 +1,49 @@
+body{
+  font-family: Open Sans, sans-serif;
+
+
+}
+.sidebar{
+  height: 100%;
+  width: 20%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: #1f1f3d;
+  color: white;
+}
+h1{
+  margin: 5%;
+}
+h2{
+  margin: 10% 5%;
+  font-weight: lighter;
+  font-size: 1em;
+}
+.show-favorite{
+  background-color: #5356a4;
+  border: 1px solid #353567;
+  color: white;
+  padding: 5%;
+  margin: 5%;
+  width: 90%;
+  font-size: 1.2em;
+}
+.idea-form{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-left: 20%;
+  position: fixed;
+  height: 40%;
+  width: 100%;
+  left: 0;
+  top: 0;
+  background-color: #a9aad2;
+}
+
+.idea-grid{
+  margin-left: 20%;
+
+}
