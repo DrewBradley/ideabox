@@ -12,12 +12,17 @@
       <button type="button" class="show-favorite">Show Starred Ideas</button>
     </section>
     <section class="idea-form">
-      <label for="title-input">Title</label>
-      <input type="text" class="title-input" name="title-input">
-      <label for="body-input">Body</label>
-      <input type="text" class="body-input" name="body-input">
-      <button type="button" name="save-button" class="save-button">Save</button>
-      <input type="text" class="search-idea" placeholder="Search ideas">
+      <div class="main-container">
+        <label for="title-input">Title</label>
+        <input type="text" class="title-input" name="title-input">
+        <label for="body-input">Body</label>
+        <textarea rows=4 type="text" class="body-input" name="body-input"></textarea>
+        <button type="button" name="save-button" class="save-button">Save</button>
+        <div class="search-container">
+          <input class="search-button" type="image" name="search-bar" src="assets/search.svg">
+          <input type="text" name="search-bar" class="search-idea" placeholder="Search ideas">
+        </div>
+      </div>
     </section>
     <section class="idea-grid">
       <article class="idea-container">
