@@ -6,7 +6,77 @@
     <link rel="stylesheet" type="text/css" href="./styles.css">
   </head>
   <body>
+    <section class="sidebar">
+      <h1>IdeaBox</h1>
+      <hr>
+      <h2>Filter Starred Ideas</h2>
+      <button type="button" class="show-favorite">Show Starred Ideas</button>
+      <hr>
+    </section>
+    <section class="idea-form">
+      <div class="main-container">
+        <label for="title-input">Title</label>
+        <input type="text" class="title-input" name="title-input">
+        <label for="body-input">Body</label>
+        <textarea rows=4 type="text" class="body-input" name="body-input"></textarea>
+        <button type="button" name="save-button" class="save-button">Save</button>
+        <div class="search-container">
+          <input class="search-button" type="image" name="search-bar" src="assets/search.svg">
+          <input type="text" name="search-bar" class="search-idea" placeholder="Search ideas">
+        </div>
+      </div>
+    </section>
+    <section class="idea-grid">
+      <article class="idea-container">
+        <span class="favorite-delete">
+          <img src="assets/star.svg" class="like" alt="Like this idea!">
+          <img src="assets/delete.svg" class="delete" alt="Delete this idea!">
+        </span>
+        <p class="idea-title">Idea Title</p>
+        <p class="idea-body">Idea body. Dont ever play yourself. Every chance I get, I water the plants, lion! Cloth talk!</p>
+        <span class="comment">
+          <img src="assets/comment.svg" class="comment-button" alt="comment button">
+          <label for="comment-button">Comment</label>
+        </span>
+      </article>
+      <article class="idea-container">
+        <span class="favorite-delete">
+          <img src="assets/star.svg" class="like" alt="Like this idea!">
+          <img src="assets/delete.svg" class="delete" alt="Delete this idea!">
+        </span>
+        <p class="idea-title">Idea Title</p>
+        <p class="idea-body">Idea body. Dont ever play yourself. Every chance I get, I water the plants, lion! Cloth talk!</p>
+        <span class="comment">
+          <img src="assets/comment.svg" class="comment-button" alt="comment button">
+          <label for="comment-button">Comment</label>
+        </span>
+      </article>
+      <article class="idea-container">
+        <span class="favorite-delete">
+          <img src="assets/star.svg" class="like" alt="Like this idea!">
+          <img src="assets/delete.svg" class="delete" alt="Delete this idea!">
+        </span>
+        <p class="idea-title">Idea Title</p>
+        <p class="idea-body">Idea body. Dont ever play yourself. Every chance I get, I water the plants, lion! Cloth talk! I am dying on the inside, but that's probably just gas.</p>
+        <span class="comment">
+          <img src="assets/comment.svg" class="comment-button" alt="comment button">
+          <label for="comment-button">Comment</label>
+        </span>
+      </article>
+      <article class="idea-container">
+        <span class="favorite-delete">
+          <img src="assets/star.svg" class="like" alt="Like this idea!">
+          <img src="assets/delete.svg" class="delete" alt="Delete this idea!">
+        </span>
+        <p class="idea-title">Idea Title</p>
+        <p class="idea-body">Idea body. Dont ever play yourself. Every chance I get, I water the plants, lion! Cloth talk!</p>
+        <span class="comment">
+          <img src="assets/comment.svg" class="comment-button" alt="comment button">
+          <label for="comment-button">Comment</label>
+        </span>
+      </article>
 
+    </section>
     <script src="./src/main.js"></script>
   </body>
 </html>
