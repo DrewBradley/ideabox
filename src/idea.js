@@ -15,5 +15,3 @@ class Idea {
 
   }
 }
-
-export.module = Idea;

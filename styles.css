@@ -3,6 +3,10 @@ body{
   background-color: #EAEAF4;
 }
 
+.hidden {
+  display: none !important;
+}
+
 .sidebar{
   height: 100%;
   width: 20%;
@@ -129,7 +133,6 @@ button {
   margin-top: 27em;
   margin-left: 20%;
   padding: 1%;
-  justify-content: space-between;
 }
 
 .idea-container {
@@ -138,7 +141,7 @@ button {
   flex-direction: column;
   width: 30%;
   height: 325px;
-  margin: 1%;
+  margin: 1.33%;
   background-color: #FFFFFF;
 }
 
