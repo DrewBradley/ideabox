@@ -15,5 +15,5 @@ class Idea {
 
   }
 }
-
-export.module = Idea;
+// module.exports = Idea
+// export default class Idea;
