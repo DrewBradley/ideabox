@@ -15,5 +15,3 @@ class Idea {
 
   }
 }
-// module.exports = Idea
-// export default class Idea;

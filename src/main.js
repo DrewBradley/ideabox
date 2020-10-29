@@ -1,5 +1,3 @@
-// var Idea = require('./idea.js')
-// import Idea from './idea.js';
 
 // QUERY SELECTORS
 var showStarredButton = document.querySelector(".show-favorite");
@@ -15,7 +13,8 @@ var commentButton = document.querySelector(".comment-button");
 var savedIdeas = [];
 
 // EVENT LISTENERS
-saveButton.addEventListener('click', saveIdea)
+saveButton.addEventListener('click', saveIdea);
+bodyInput.addEventListener('keyup', enableSaveButton);
 
 // FUNCTIONS
 function saveIdea() {
@@ -23,5 +22,16 @@ function saveIdea() {
     var idea = new Idea(titleInput.value, bodyInput.value);
     savedIdeas.push(idea);
   }
-  console.log(savedIdeas)
+  titleInput.value = "";
+  bodyInput.value = "";
+  saveButton.disabled = true;
+  console.log('hot damn')
+}
+
+function enableSaveButton() {
+  if (titleInput.value.length > 0 && bodyInput.value.length > 0){
+    saveButton.disabled = false;
+  }else{
+    saveButton.disabled = true;
+  }
 }
