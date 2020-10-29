@@ -42,7 +42,7 @@ function showIdeas() {
   ideaGrid.innerHTML = "";
   for (var i = 0; i < savedIdeas.length; i++){
     ideaGrid.innerHTML += `
-      <article class="idea-container">
+      <article class="idea-container" id=${savedIdeas[i].id}>
         <span class="favorite-delete">
           <img src="assets/star.svg" class="like" alt="Like this idea!">
           <img src="assets/delete.svg" class="delete" alt="Delete this idea!">
@@ -57,3 +57,22 @@ function showIdeas() {
     `
   }
 }
+ideaGrid.addEventListener("click", checkEventTarget);
+
+function checkEventTarget(event){
+  if(event.target.classList.contains("delete")){
+    deleteIdea(event);
+  } else if (event.target.className === "like"){
+    favoriteIdea(event);
+  }
+};
+
+function deleteIdea(event){
+  var id = parseInt(event.target.parentNode.parentNode.id);
+  for(var i = 0; i < savedIdeas.length; i++){
+    if(savedIdeas[i].id === id){
+      savedIdeas.splice(i, 1)
+    }
+  showIdeas();
+  }
+};
