@@ -3,6 +3,10 @@ body{
   background-color: #EAEAF4;
 }
 
+.hidden {
+  display: none !important;
+}
+
 .sidebar{
   height: 100%;
   width: 20%;

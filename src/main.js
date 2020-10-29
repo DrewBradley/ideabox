@@ -9,6 +9,7 @@ var searchButton = document.querySelector(".search-button");
 var starButton = document.querySelector(".like");
 var deleteButton = document.querySelector(".delete");
 var commentButton = document.querySelector(".comment-button");
+var ideaGrid = document.querySelector(".idea-grid")
 
 var savedIdeas = [];
 
@@ -25,6 +26,7 @@ function saveIdea() {
   titleInput.value = "";
   bodyInput.value = "";
   saveButton.disabled = true;
+  showIdeas();
   console.log('hot damn')
 }
 
@@ -33,5 +35,25 @@ function enableSaveButton() {
     saveButton.disabled = false;
   }else{
     saveButton.disabled = true;
+  }
+}
+
+function showIdeas() {
+  ideaGrid.innerHTML = "";
+  for (var i = 0; i < savedIdeas.length; i++){
+    ideaGrid.innerHTML += `
+      <article class="idea-container">
+        <span class="favorite-delete">
+          <img src="assets/star.svg" class="like" alt="Like this idea!">
+          <img src="assets/delete.svg" class="delete" alt="Delete this idea!">
+        </span>
+        <p class="idea-title">${savedIdeas[i].title}</p>
+        <p class="idea-body">${savedIdeas[i].body}</p>
+        <span class="comment">
+          <img src="assets/comment.svg" class="comment-button" alt="comment button">
+          <label for="comment-button">Comment</label>
+        </span>
+      </article>
+    `
   }
 }
