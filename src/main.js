@@ -8,12 +8,14 @@ var searchInput = document.querySelector(".search-input");
 var searchButton = document.querySelector(".search-button");
 var ideaGrid = document.querySelector(".idea-grid");
 
+// var retrievedObject = JSON.parse(localStorage.getItem("localIdeas"));
 var savedIdeas = [];
 
 // EVENT LISTENERS
 saveButton.addEventListener('click', saveIdea);
 bodyInput.addEventListener('keyup', enableSaveButton);
 ideaGrid.addEventListener("click", checkEventTarget);
+window.addEventListener('load', pageLoad);
 
 // FUNCTIONS
 function saveIdea() {
@@ -25,6 +27,7 @@ function saveIdea() {
   bodyInput.value = "";
   saveButton.disabled = true;
   showIdeas();
+  idea.saveToStorage();
 };
 
 function enableSaveButton() {
@@ -88,3 +91,14 @@ function favoriteIdea(target) {
     };
     showIdeas()
 };
+
+function pageLoad() {
+  if (localStorage){
+    for (var i = 0; i < localStorage.length; i++){
+      var key = localStorage.key(i);
+      var idea = localStorage.getItem(key);
+      savedIdeas.push(JSON.parse(idea));
+    }
+    showIdeas();
+  }
+}

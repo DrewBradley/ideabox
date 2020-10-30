@@ -6,12 +6,14 @@ class Idea {
     this.star = false;
   }
   saveToStorage(){
-
+    localStorage.setItem(JSON.stringify(this.id), JSON.stringify(this));
   }
+
   deleteFromStorage(){
 
   }
+  
   updateIdea(){
-
+    
   }
 }

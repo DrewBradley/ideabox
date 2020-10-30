@@ -96,6 +96,12 @@ button {
   font-size: x-large;
   font-family: Open Sans;
   font-weight: 700;
+  cursor: pointer;
+}
+button:disabled{
+  background-color: #6b6c88;
+  color: #555570;
+  cursor: not-allowed;
 }
 
 .search-container {
