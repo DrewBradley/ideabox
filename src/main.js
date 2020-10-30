@@ -74,11 +74,14 @@ function checkEventTarget(event) {
 
 function deleteIdea(target) {
   var id = parseInt(target.parentNode.parentNode.id);
+  // var idea = localStorage.key(id);
     for (var i = 0; i < savedIdeas.length; i++) {
       if (savedIdeas[i].id === id) {
+        savedIdeas[i].deleteFromStorage();
         savedIdeas.splice(i, 1);
       };
     };
+
     showIdeas();
 };
 

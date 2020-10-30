@@ -10,10 +10,10 @@ class Idea {
   }
 
   deleteFromStorage(){
-
+    localStorage.removeItem(JSON.stringify(this));
   }
   
   updateIdea(){
-    
+
   }
 }
