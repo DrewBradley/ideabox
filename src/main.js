@@ -16,7 +16,9 @@ saveButton.addEventListener('click', saveIdea);
 bodyInput.addEventListener('keyup', enableSaveButton);
 ideaGrid.addEventListener("click", checkEventTarget);
 window.addEventListener('load', pageLoad);
-showStarredButton.addEventListener('click', showStarredIdeas)
+showStarredButton.addEventListener('click', showStarredIdeas);
+searchInput.addEventListener('keyup', searchIdeas);
+searchButton.addEventListener('click', searchIdeas);
 
 // FUNCTIONS
 function saveIdea() {
@@ -112,14 +114,31 @@ function pageLoad() {
 
 
 function showStarredIdeas() {
+  searchInput.value = '';
   if (showStarredButton.innerText === "Show Starred Ideas"){
     showStarredButton.innerText = "Show All Ideas"
-    var starredIdeas = savedIdeas.filter(x => x.star);
-  showIdeas(starredIdeas);
+    filterStarredIdeas(savedIdeas);
   }else{
     showStarredButton.innerText = "Show Starred Ideas"
     showIdeas(savedIdeas);
   }
-
 }
 
+function filterStarredIdeas(array){
+  var starredIdeas = array.filter(x => x.star);
+  showIdeas(starredIdeas);
+}
+
+function searchIdeas() {
+  if (searchInput.value.length > 0 && showStarredButton.innerText === "Show All Ideas") {
+    var starredIdeas = savedIdeas.filter(x => x.star);
+    var searchResults = starredIdeas.filter((obj) => obj.title.includes(searchInput.value) || obj.body.includes(searchInput.value));
+    filterStarredIdeas(searchResults);
+  }else if (searchInput.value.length > 0){
+    var searchResults = savedIdeas.filter((obj) => obj.title.includes(searchInput.value) || obj.body.includes(searchInput.value));
+    showIdeas(searchResults);
+  }
+  else{
+    showIdeas(savedIdeas);
+  }
+}
