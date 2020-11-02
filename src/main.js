@@ -16,6 +16,7 @@ saveButton.addEventListener('click', saveIdea);
 bodyInput.addEventListener('keyup', enableSaveButton);
 ideaGrid.addEventListener("click", checkEventTarget);
 window.addEventListener('load', pageLoad);
+showStarredButton.addEventListener('click', showStarredIdeas)
 
 // FUNCTIONS
 function saveIdea() {
@@ -26,7 +27,7 @@ function saveIdea() {
   titleInput.value = "";
   bodyInput.value = "";
   saveButton.disabled = true;
-  showIdeas();
+  showIdeas(savedIdeas);
   idea.saveToStorage();
 };
 
@@ -38,22 +39,22 @@ function enableSaveButton() {
   };
 };
 
-function showIdeas() {
+function showIdeas(array) {
   ideaGrid.innerHTML = "";
-  for (var i = 0; i < savedIdeas.length; i++) {
-    if (savedIdeas[i].star === false) {
+  for (var i = 0; i < array.length; i++) {
+    if (array[i].star === false) {
       var star = "assets/star.svg";
-    } else if (savedIdeas[i].star === true) {
+    } else if (array[i].star === true) {
       var star = "assets/star-active.svg";
     };
     ideaGrid.innerHTML += `
-      <article class="idea-container" id=${savedIdeas[i].id}>
+      <article class="idea-container" id=${array[i].id}>
         <span class="favorite-delete">
           <img src=${star} class="like" alt="Like this idea!">
           <img src="assets/delete.svg" class="delete" alt="Delete this idea!">
         </span>
-        <p class="idea-title">${savedIdeas[i].title}</p>
-        <p class="idea-body">${savedIdeas[i].body}</p>
+        <p class="idea-title">${array[i].title}</p>
+        <p class="idea-body">${array[i].body}</p>
         <span class="comment">
           <img src="assets/comment.svg" class="comment-button" alt="comment button">
           <label for="comment-button">Comment</label>
@@ -81,7 +82,7 @@ function deleteIdea(target) {
         savedIdeas.splice(i, 1);
       };
     };
-    showIdeas();
+    showIdeas(savedIdeas);
 };
 
 function favoriteIdea(target) {
@@ -94,7 +95,7 @@ function favoriteIdea(target) {
         localStorage.setItem(id, JSON.stringify(idea));
       };
     };
-    showIdeas()
+    showIdeas(savedIdeas)
 };
 
 function pageLoad() {
@@ -105,6 +106,20 @@ function pageLoad() {
       var id = idea.id;
       savedIdeas.push(new Idea(idea.title, idea.body, id, idea.star));
     }
-    showIdeas();
+    showIdeas(savedIdeas);
   }
 }
+
+
+function showStarredIdeas() {
+  if (showStarredButton.innerText === "Show Starred Ideas"){
+    showStarredButton.innerText = "Show All Ideas"
+    var starredIdeas = savedIdeas.filter(x => x.star);
+  showIdeas(starredIdeas);
+  }else{
+    showStarredButton.innerText = "Show Starred Ideas"
+    showIdeas(savedIdeas);
+  }
+
+}
+
