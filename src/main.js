@@ -20,7 +20,7 @@ window.addEventListener('load', pageLoad);
 // FUNCTIONS
 function saveIdea() {
   if (titleInput.value && bodyInput.value) {
-    var idea = new Idea(titleInput.value, bodyInput.value);
+    var idea = new Idea(titleInput.value, bodyInput.value, Date.now());
     savedIdeas.push(idea);
   };
   titleInput.value = "";
@@ -81,7 +81,6 @@ function deleteIdea(target) {
         savedIdeas.splice(i, 1);
       };
     };
-
     showIdeas();
 };
 
@@ -90,17 +89,21 @@ function favoriteIdea(target) {
     for (var i = 0; i < savedIdeas.length; i++) {
       if (savedIdeas[i].id === id) {
         savedIdeas[i].star = !savedIdeas[i].star;
+        var idea = JSON.parse(localStorage.getItem(id));
+        idea.star = !idea.star;
+        localStorage.setItem(id, JSON.stringify(idea));
       };
     };
     showIdeas()
 };
 
 function pageLoad() {
-  if (localStorage){
+  if (localStorage) {
     for (var i = 0; i < localStorage.length; i++){
       var key = localStorage.key(i);
-      var idea = localStorage.getItem(key);
-      savedIdeas.push(JSON.parse(idea));
+      var idea = JSON.parse(localStorage.getItem(key));
+      var id = idea.id;
+      savedIdeas.push(new Idea(idea.title, idea.body, id, idea.star));
     }
     showIdeas();
   }
