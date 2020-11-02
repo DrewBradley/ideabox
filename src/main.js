@@ -7,6 +7,7 @@ var saveButton = document.querySelector(".save-button");
 var searchInput = document.querySelector(".search-input");
 var searchButton = document.querySelector(".search-button");
 var ideaGrid = document.querySelector(".idea-grid");
+var modal = document.querySelector(".modal")
 
 // var retrievedObject = JSON.parse(localStorage.getItem("localIdeas"));
 var savedIdeas = [];
@@ -14,11 +15,12 @@ var savedIdeas = [];
 // EVENT LISTENERS
 saveButton.addEventListener('click', saveIdea);
 bodyInput.addEventListener('keyup', enableSaveButton);
-ideaGrid.addEventListener("click", checkEventTarget);
+ideaGrid.addEventListener('click', checkEventTarget);
 window.addEventListener('load', pageLoad);
 showStarredButton.addEventListener('click', showStarredIdeas);
 searchInput.addEventListener('keyup', searchIdeas);
 searchButton.addEventListener('click', searchIdeas);
+modal.addEventListener('click', checkModalEventTarget)
 
 // FUNCTIONS
 function saveIdea() {
@@ -72,7 +74,9 @@ function checkEventTarget(event) {
     deleteIdea(eventTarget);
   } else if (eventTarget.classList.contains("like")) {
     favoriteIdea(eventTarget);
-  };
+  } else if (eventTarget.classList.contains("comment-button")) {
+    showCommentInput(eventTarget);
+  }
 };
 
 function deleteIdea(target) {
@@ -122,12 +126,12 @@ function showStarredIdeas() {
     showStarredButton.innerText = "Show Starred Ideas"
     showIdeas(savedIdeas);
   }
-}
+};
 
 function filterStarredIdeas(array){
   var starredIdeas = array.filter(x => x.star);
   showIdeas(starredIdeas);
-}
+};
 
 function searchIdeas() {
   if (searchInput.value.length > 0 && showStarredButton.innerText === "Show All Ideas") {
@@ -141,4 +145,24 @@ function searchIdeas() {
   else{
     showIdeas(savedIdeas);
   }
-}
+};
+
+function showCommentInput() {
+  modal.style.display = 'block';
+};
+
+function checkModalEventTarget(event) {
+  var eventTarget = event.target;
+  if (eventTarget.classList.contains("close-button")) {
+    closeCommentCard(eventTarget);
+    // DO THIS NEXT ///
+  } else if (eventTarget.classList.contains("like")) {
+    favoriteIdea(eventTarget);
+  } else if (eventTarget.classList.contains("comment-button")) {
+    showCommentInput(eventTarget);
+  }
+};
+
+function closeCommentCard() {
+  modal.style.display = "none";
+};
