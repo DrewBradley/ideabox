@@ -11,6 +11,7 @@ var modal = document.querySelector(".modal");
 var commentInput = document.querySelector(".comment-text");
 var commentSubmit = document.querySelector(".submit-comment");
 var commentClose = document.querySelector(".close-button");
+var commentDisplay = document.querySelector(".comment-display")
 
 // var retrievedObject = JSON.parse(localStorage.getItem("localIdeas"));
 var savedIdeas = [];
@@ -89,7 +90,7 @@ function checkEventTarget(event) {
     favoriteIdea(eventTarget);
   } else if (eventTarget.classList.contains("comment-button")) {
     var id = eventTarget.parentNode.parentNode.id;
-    showCommentInput();
+    showCommentInput(id);
     commentInput.id = id;
   }
 };
@@ -178,8 +179,17 @@ function searchIdeas() {
   }
 };
 
-function showCommentInput() {
+function showCommentInput(id) {
+  commentDisplay.innerHTML = '';
   modal.style.display = 'block';
+  var newId = parseInt(id)
+  for (var i = 0; i < savedComments.length; i++) {
+    if (savedComments[i].parentId === newId) {
+      commentDisplay.innerHTML += `
+        <p class="comment-display-text">${savedComments[i].text}</p>
+      `
+    }
+  }
 };
 
 function enableCommentSubmit(){
@@ -194,12 +204,16 @@ function enableCommentSubmit(){
 
 function closeCommentCard() {
   modal.style.display = "none";
+  commentDisplay.innerHTML = '';
 };
+
 function submitComment(event){
   var text = commentInput.value;
   var parentId = parseInt(commentInput.id);
   //save comment to local storage
   var newComment = new Comment(Date.now(), parentId, text);
+  savedComments.push(newComment)
+  showCommentInput(parentId)
   addCommentToIdea(newComment, parentId)
   commentInput.value = '';
   showIdeas(savedIdeas.sort(compareId));
