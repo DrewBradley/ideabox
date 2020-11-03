@@ -175,6 +175,12 @@ p {
   margin-top: 5%;
 }
 
+.comment-ticker{
+  margin-left: auto;
+  font-size: 1em;
+  font-weight: 300;
+}
+
 .comment {
   margin-top: auto;
   display: flex;
@@ -190,6 +196,7 @@ p {
 
 .comment-button {
   height: 100%;
+  cursor: pointer;
 }
 
 .modal {
@@ -219,6 +226,7 @@ p {
   color: lightgray;
   font-size: 24px;
   font-weight: bold;
+  cursor: pointer;
 }
 
 .close-button:hover {
