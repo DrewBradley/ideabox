@@ -241,10 +241,13 @@ p {
   animation-duration: 0.4s;
 }
 
-/* .comment-display-text {
-  font-size: 0em;
-  font-weight: normal;
-} */
+.comment-delete {
+  margin-left: auto;
+}
+
+.comment-delete:hover {
+  cursor: pointer;
+}
 
 .close-button {
   float: right;
