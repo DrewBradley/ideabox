@@ -14,6 +14,7 @@ var commentClose = document.querySelector(".close-button");
 
 // var retrievedObject = JSON.parse(localStorage.getItem("localIdeas"));
 var savedIdeas = [];
+var savedComments = [];
 
 // EVENT LISTENERS
 saveButton.addEventListener('click', saveIdea);
@@ -57,6 +58,11 @@ function showIdeas(array) {
     } else if (array[i].star === true) {
       var star = "assets/star-active.svg";
     };
+    if (array[i].comments.length > 1 || array[i].comments.length === 0){
+      var commentCountText = 'comments'
+    }else{
+      var commentCountText = 'comment'
+    }
     ideaGrid.innerHTML += `
       <article class="idea-container" id=${array[i].id}>
         <span class="favorite-delete">
@@ -68,6 +74,7 @@ function showIdeas(array) {
         <span class="comment">
           <img src="assets/comment.svg" class="comment-button" alt="comment button">
           <label for="comment-button">Comment</label>
+          <p class="comment-ticker">${array[i].comments.length} ${commentCountText}</p>
         </span>
       </article>
     `
@@ -118,9 +125,16 @@ function pageLoad() {
     for (var i = 0; i < localStorage.length; i++){
       var key = localStorage.key(i);
       var idea = JSON.parse(localStorage.getItem(key));
-      var id = idea.id;
-      savedIdeas.push(new Idea(idea.title, idea.body, id, idea.star));
+      if (idea.title){
+        var id = idea.id;
+        savedIdeas.push(new Idea(idea.title, idea.body, id, idea.star));
+      }else if (!idea.title){
+        savedComments.push(new Comment(idea.id, idea.parentId, idea.text));
+      }
     }
+    for (var i = 0; i < savedComments.length; i++){
+      addCommentToIdea(savedComments[i], savedComments[i].parentId);
+    };
     showIdeas(savedIdeas.sort(compareId));
   }
 }
@@ -183,19 +197,33 @@ function closeCommentCard() {
 };
 function submitComment(event){
   var text = commentInput.value;
-  var commentId = parseInt(commentInput.id) + 1;
-  console.log(commentInput.id);
+  var parentId = parseInt(commentInput.id);
   //save comment to local storage
-  var newComment = new Comment(commentId, text);
-
+  var newComment = new Comment(Date.now(), parentId, text);
+  addCommentToIdea(newComment, parentId)
+  commentInput.value = '';
+  showIdeas(savedIdeas.sort(compareId));
   newComment.saveToStorage();
   //loop thru local storage to find corresponding idea
-
   //parse idea object
 
   //push idea.comments
 
   //save back to storage
 
+  //on SUBMIT close comment form modal, open comment display modal
+
+  //seperate function to push comment to idea.comment array
+
+  //seperate function to populate the comments of an idea.
+
   console.log(text);
+}
+
+function addCommentToIdea(newComment, parentId) {
+  for (var i = 0; i < savedIdeas.length; i++){
+    if (savedIdeas[i].id === parentId){
+      savedIdeas[i].comments.push(newComment);
+    }
+  }
 }

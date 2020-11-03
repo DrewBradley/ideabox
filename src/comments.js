@@ -1,6 +1,7 @@
 class Comment {
-  constructor(id, text) {
+  constructor(id, parentId, text) {
     this.id = id;
+    this.parentId = parentId;
     this.text = text;
   }
   saveToStorage() {
