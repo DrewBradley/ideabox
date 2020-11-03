@@ -7,18 +7,27 @@ var saveButton = document.querySelector(".save-button");
 var searchInput = document.querySelector(".search-input");
 var searchButton = document.querySelector(".search-button");
 var ideaGrid = document.querySelector(".idea-grid");
+var modal = document.querySelector(".modal");
+var commentInput = document.querySelector(".comment-text");
+var commentSubmit = document.querySelector(".submit-comment");
+var commentClose = document.querySelector(".close-button");
 
 // var retrievedObject = JSON.parse(localStorage.getItem("localIdeas"));
 var savedIdeas = [];
+var savedComments = [];
 
 // EVENT LISTENERS
 saveButton.addEventListener('click', saveIdea);
 bodyInput.addEventListener('keyup', enableSaveButton);
-ideaGrid.addEventListener("click", checkEventTarget);
+ideaGrid.addEventListener('click', checkEventTarget);
 window.addEventListener('load', pageLoad);
 showStarredButton.addEventListener('click', showStarredIdeas);
 searchInput.addEventListener('keyup', searchIdeas);
 searchButton.addEventListener('click', searchIdeas);
+commentInput.addEventListener('keyup', enableCommentSubmit);
+commentClose.addEventListener('click', closeCommentCard);
+commentSubmit.addEventListener('click', submitComment);
+
 
 // FUNCTIONS
 function saveIdea() {
@@ -49,6 +58,11 @@ function showIdeas(array) {
     } else if (array[i].star === true) {
       var star = "assets/star-active.svg";
     };
+    if (array[i].comments.length > 1 || array[i].comments.length === 0){
+      var commentCountText = 'comments'
+    }else{
+      var commentCountText = 'comment'
+    }
     ideaGrid.innerHTML += `
       <article class="idea-container" id=${array[i].id}>
         <span class="favorite-delete">
@@ -60,6 +74,7 @@ function showIdeas(array) {
         <span class="comment">
           <img src="assets/comment.svg" class="comment-button" alt="comment button">
           <label for="comment-button">Comment</label>
+          <p class="comment-ticker">${array[i].comments.length} ${commentCountText}</p>
         </span>
       </article>
     `
@@ -72,8 +87,13 @@ function checkEventTarget(event) {
     deleteIdea(eventTarget);
   } else if (eventTarget.classList.contains("like")) {
     favoriteIdea(eventTarget);
-  };
+  } else if (eventTarget.classList.contains("comment-button")) {
+    var id = eventTarget.parentNode.parentNode.id;
+    showCommentInput();
+    commentInput.id = id;
+  }
 };
+
 
 function deleteIdea(target) {
   var id = parseInt(target.parentNode.parentNode.id);
@@ -84,7 +104,7 @@ function deleteIdea(target) {
         savedIdeas.splice(i, 1);
       };
     };
-    showIdeas(savedIdeas);
+    showIdeas(savedIdeas.sort(compareId));
 };
 
 function favoriteIdea(target) {
@@ -97,7 +117,7 @@ function favoriteIdea(target) {
         localStorage.setItem(id, JSON.stringify(idea));
       };
     };
-    showIdeas(savedIdeas)
+    showIdeas(savedIdeas.sort(compareId))
 };
 
 function pageLoad() {
@@ -105,10 +125,17 @@ function pageLoad() {
     for (var i = 0; i < localStorage.length; i++){
       var key = localStorage.key(i);
       var idea = JSON.parse(localStorage.getItem(key));
-      var id = idea.id;
-      savedIdeas.push(new Idea(idea.title, idea.body, id, idea.star));
+      if (idea.title){
+        var id = idea.id;
+        savedIdeas.push(new Idea(idea.title, idea.body, id, idea.star));
+      }else if (!idea.title){
+        savedComments.push(new Comment(idea.id, idea.parentId, idea.text));
+      }
     }
-    showIdeas(savedIdeas);
+    for (var i = 0; i < savedComments.length; i++){
+      addCommentToIdea(savedComments[i], savedComments[i].parentId);
+    };
+    showIdeas(savedIdeas.sort(compareId));
   }
 }
 
@@ -117,16 +144,24 @@ function showStarredIdeas() {
   searchInput.value = '';
   if (showStarredButton.innerText === "Show Starred Ideas"){
     showStarredButton.innerText = "Show All Ideas"
-    filterStarredIdeas(savedIdeas);
+    filterStarredIdeas(savedIdeas.sort(compareId));
   }else{
     showStarredButton.innerText = "Show Starred Ideas"
-    showIdeas(savedIdeas);
+    showIdeas(savedIdeas.sort(compareId));
   }
-}
+};
 
 function filterStarredIdeas(array){
   var starredIdeas = array.filter(x => x.star);
-  showIdeas(starredIdeas);
+  showIdeas(starredIdeas.sort(compareId));
+};
+
+function compareId(a,b){
+  aId = parseInt(a.id);
+  bId = parseInt(b.id);
+  if(aId > bId) return 1;
+  if(aId < bId) return -1;
+  return 0;
 }
 
 function searchIdeas() {
@@ -136,9 +171,59 @@ function searchIdeas() {
     filterStarredIdeas(searchResults);
   }else if (searchInput.value.length > 0){
     var searchResults = savedIdeas.filter((obj) => obj.title.includes(searchInput.value) || obj.body.includes(searchInput.value));
-    showIdeas(searchResults);
+    showIdeas(searchResults.sort(compareId));
   }
   else{
-    showIdeas(savedIdeas);
+    showIdeas(savedIdeas.sort(compareId));
+  }
+};
+
+function showCommentInput() {
+  modal.style.display = 'block';
+};
+
+function enableCommentSubmit(){
+  if(commentInput.value.length > 0){
+    commentSubmit.disabled = false;
+  } else {
+    commentSubmit.disabled = true;
+  }
+};
+
+
+
+function closeCommentCard() {
+  modal.style.display = "none";
+};
+function submitComment(event){
+  var text = commentInput.value;
+  var parentId = parseInt(commentInput.id);
+  //save comment to local storage
+  var newComment = new Comment(Date.now(), parentId, text);
+  addCommentToIdea(newComment, parentId)
+  commentInput.value = '';
+  showIdeas(savedIdeas.sort(compareId));
+  newComment.saveToStorage();
+  //loop thru local storage to find corresponding idea
+  //parse idea object
+
+  //push idea.comments
+
+  //save back to storage
+
+  //on SUBMIT close comment form modal, open comment display modal
+
+  //seperate function to push comment to idea.comment array
+
+  //seperate function to populate the comments of an idea.
+
+  console.log(text);
+}
+
+function addCommentToIdea(newComment, parentId) {
+  for (var i = 0; i < savedIdeas.length; i++){
+    if (savedIdeas[i].id === parentId){
+      savedIdeas[i].comments.push(newComment);
+    }
   }
 }
