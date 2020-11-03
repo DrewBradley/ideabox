@@ -1,11 +1,10 @@
-class Comments {
-  constructor(title, body) {
-    this.id = Date.now();
-    this.title = title;
-    this.body = body;
+class Comment {
+  constructor(id, text) {
+    this.id = id;
+    this.text = text;
   }
   saveToStorage() {
-    localStorage.setItem(JSON.stringify(this.id), JSON.stringify(this));
+    localStorage.setItem(this.id, JSON.stringify(this));
   }
   deleteFromStorage() {
     localStorage.removeItem(this.id);
