@@ -6,6 +6,7 @@ class Idea {
     this.star = star || false;
     this.comments =  comments || [];
   }
+
   saveToStorage(){
     localStorage.setItem(JSON.stringify(this.id), JSON.stringify(this));
   }
@@ -13,8 +14,4 @@ class Idea {
   deleteFromStorage(){
     localStorage.removeItem(this.id);
   }
-
-  updateIdea(){
-
-  }
-}
+};
