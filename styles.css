@@ -58,7 +58,7 @@ hr {
   align-self: start;
   margin-left: 20%;
   position: fixed;
-  height: 22em;
+  height: 25em;
   width: 80%;
   left: 0;
   top: 0;
@@ -98,6 +98,7 @@ button {
   font-weight: 700;
   cursor: pointer;
 }
+
 button:disabled{
   background-color: #6b6c88;
   color: #555570;
@@ -136,7 +137,7 @@ button:disabled{
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  margin-top: 22em;
+  margin-top: 25em;
   margin-left: 20%;
   padding: 1%;
 }
@@ -156,7 +157,6 @@ button:disabled{
   justify-content: space-between;
   background-color: #1f1f3d;
   height: 2em;
-  /* width: auto; */
 }
 
 .like, .delete {
@@ -179,6 +179,7 @@ p {
   margin-left: auto;
   font-size: 1em;
   font-weight: 300;
+  width: 90%;
 }
 
 .comment {
@@ -221,6 +222,11 @@ p {
   animation-duration: 0.4s;
 }
 
+.comment-text{
+  width: 90%;
+  margin: auto;
+}
+
 .comment-display {
   position: relative;
   background-color: white;
@@ -239,6 +245,13 @@ p {
   width: 25%;
   animation-name: animatetop;
   animation-duration: 0.4s;
+}
+
+.submit-comment{
+  height: auto;
+  font-size: .75em;
+  align-items: center;
+  justify-content: center;
 }
 
 .comment-delete {

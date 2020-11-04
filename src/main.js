@@ -1,5 +1,5 @@
+// Query Selectors
 
-// QUERY SELECTORS
 var showStarredButton = document.querySelector(".show-favorite");
 var titleInput = document.querySelector(".title-input");
 var bodyInput = document.querySelector(".body-input");
@@ -13,15 +13,17 @@ var commentSubmit = document.querySelector(".submit-comment");
 var commentClose = document.querySelector(".close-button");
 var commentDisplay = document.querySelector(".comment-display")
 
-// var retrievedObject = JSON.parse(localStorage.getItem("localIdeas"));
+// Global Variables
+
 var savedIdeas = [];
 var savedComments = [];
 
 // EVENT LISTENERS
+
+window.addEventListener('load', pageLoad);
 saveButton.addEventListener('click', saveIdea);
 bodyInput.addEventListener('keyup', enableSaveButton);
 ideaGrid.addEventListener('click', checkEventTarget);
-window.addEventListener('load', pageLoad);
 showStarredButton.addEventListener('click', showStarredIdeas);
 searchInput.addEventListener('keyup', searchIdeas);
 searchButton.addEventListener('click', searchIdeas);
@@ -31,6 +33,26 @@ commentSubmit.addEventListener('click', submitComment);
 modal.addEventListener('click', deleteComment);
 
 // FUNCTIONS
+
+function pageLoad() {
+  if (localStorage) {
+    for (var i = 0; i < localStorage.length; i++){
+      var key = localStorage.key(i);
+      var idea = JSON.parse(localStorage.getItem(key));
+      if (idea.title){
+        var id = idea.id;
+        savedIdeas.push(new Idea(idea.title, idea.body, id, idea.star));
+      }else if (!idea.title){
+        savedComments.push(new Comment(idea.id, idea.parentId, idea.text));
+      }
+    }
+    for (var i = 0; i < savedComments.length; i++){
+      addCommentToIdea(savedComments[i], savedComments[i].parentId);
+    };
+    showIdeas(savedIdeas.sort(compareId));
+  }
+};
+
 function saveIdea() {
   if (titleInput.value && bodyInput.value) {
     var idea = new Idea(titleInput.value, bodyInput.value, Date.now());
@@ -120,25 +142,6 @@ function favoriteIdea(target) {
     showIdeas(savedIdeas.sort(compareId))
 };
 
-function pageLoad() {
-  if (localStorage) {
-    for (var i = 0; i < localStorage.length; i++){
-      var key = localStorage.key(i);
-      var idea = JSON.parse(localStorage.getItem(key));
-      if (idea.title){
-        var id = idea.id;
-        savedIdeas.push(new Idea(idea.title, idea.body, id, idea.star));
-      }else if (!idea.title){
-        savedComments.push(new Comment(idea.id, idea.parentId, idea.text));
-      }
-    }
-    for (var i = 0; i < savedComments.length; i++){
-      addCommentToIdea(savedComments[i], savedComments[i].parentId);
-    };
-    showIdeas(savedIdeas.sort(compareId));
-  }
-}
-
 function showStarredIdeas() {
   searchInput.value = '';
   if (showStarredButton.innerText === "Show Starred Ideas"){
@@ -155,14 +158,6 @@ function filterStarredIdeas(array){
   showIdeas(starredIdeas.sort(compareId));
 };
 
-function compareId(a,b){
-  aId = parseInt(a.id);
-  bId = parseInt(b.id);
-  if(aId > bId) return 1;
-  if(aId < bId) return -1;
-  return 0;
-}
-
 function searchIdeas() {
   if (searchInput.value.length > 0 && showStarredButton.innerText === "Show All Ideas") {
     var starredIdeas = savedIdeas.filter(x => x.star);
@@ -175,6 +170,14 @@ function searchIdeas() {
   else{
     showIdeas(savedIdeas.sort(compareId));
   }
+};
+
+function compareId(a,b){
+  aId = parseInt(a.id);
+  bId = parseInt(b.id);
+  if(aId > bId) return 1;
+  if(aId < bId) return -1;
+  return 0;
 };
 
 function showCommentInput(id) {
@@ -213,7 +216,7 @@ function submitComment(event){
   commentInput.value = '';
   showIdeas(savedIdeas.sort(compareId));
   newComment.saveToStorage();
-}
+};
 
 function addCommentToIdea(newComment, parentId) {
   for (var i = 0; i < savedIdeas.length; i++){
@@ -221,7 +224,7 @@ function addCommentToIdea(newComment, parentId) {
       savedIdeas[i].comments.push(newComment);
     }
   }
-}
+};
 
 function deleteComment(event) {
   var targetId = parseInt(event.target.id)
@@ -236,7 +239,7 @@ function deleteComment(event) {
     }
     modal.style.display = 'none'
   }
-}
+};
 
 function checkIdeasArray(id, targetId) {
   for (var i = 0; i < savedIdeas.length; i++) {
@@ -248,4 +251,4 @@ function checkIdeasArray(id, targetId) {
       }
     }
   }
-}
+};
