@@ -11,6 +11,7 @@ var modal = document.querySelector(".modal");
 var commentInput = document.querySelector(".comment-text");
 var commentSubmit = document.querySelector(".submit-comment");
 var commentClose = document.querySelector(".close-button");
+var commentDisplay = document.querySelector(".comment-display")
 
 // var retrievedObject = JSON.parse(localStorage.getItem("localIdeas"));
 var savedIdeas = [];
@@ -27,7 +28,7 @@ searchButton.addEventListener('click', searchIdeas);
 commentInput.addEventListener('keyup', enableCommentSubmit);
 commentClose.addEventListener('click', closeCommentCard);
 commentSubmit.addEventListener('click', submitComment);
-
+modal.addEventListener('click', deleteComment);
 
 // FUNCTIONS
 function saveIdea() {
@@ -89,11 +90,10 @@ function checkEventTarget(event) {
     favoriteIdea(eventTarget);
   } else if (eventTarget.classList.contains("comment-button")) {
     var id = eventTarget.parentNode.parentNode.id;
-    showCommentInput();
+    showCommentInput(id);
     commentInput.id = id;
   }
 };
-
 
 function deleteIdea(target) {
   var id = parseInt(target.parentNode.parentNode.id);
@@ -139,7 +139,6 @@ function pageLoad() {
   }
 }
 
-
 function showStarredIdeas() {
   searchInput.value = '';
   if (showStarredButton.innerText === "Show Starred Ideas"){
@@ -178,8 +177,17 @@ function searchIdeas() {
   }
 };
 
-function showCommentInput() {
+function showCommentInput(id) {
+  commentDisplay.innerHTML = '';
   modal.style.display = 'block';
+  var newId = parseInt(id)
+  for (var i = 0; i < savedComments.length; i++) {
+    if (savedComments[i].parentId === newId) {
+      commentDisplay.innerHTML += `
+        <span id=${savedComments[i].id} class="comment-delete">&#9746</span><p class="comment-display-text">${savedComments[i].text}</p>
+      `
+    }
+  }
 };
 
 function enableCommentSubmit(){
@@ -190,40 +198,54 @@ function enableCommentSubmit(){
   }
 };
 
-
-
 function closeCommentCard() {
   modal.style.display = "none";
+  commentDisplay.innerHTML = '';
 };
+
 function submitComment(event){
   var text = commentInput.value;
   var parentId = parseInt(commentInput.id);
-  //save comment to local storage
   var newComment = new Comment(Date.now(), parentId, text);
+  savedComments.push(newComment)
+  showCommentInput(parentId)
   addCommentToIdea(newComment, parentId)
   commentInput.value = '';
   showIdeas(savedIdeas.sort(compareId));
   newComment.saveToStorage();
-  //loop thru local storage to find corresponding idea
-  //parse idea object
-
-  //push idea.comments
-
-  //save back to storage
-
-  //on SUBMIT close comment form modal, open comment display modal
-
-  //seperate function to push comment to idea.comment array
-
-  //seperate function to populate the comments of an idea.
-
-  console.log(text);
 }
 
 function addCommentToIdea(newComment, parentId) {
   for (var i = 0; i < savedIdeas.length; i++){
     if (savedIdeas[i].id === parentId){
       savedIdeas[i].comments.push(newComment);
+    }
+  }
+}
+
+function deleteComment(event) {
+  var targetId = parseInt(event.target.id)
+  if (event.target.classList.contains("comment-delete")) {
+    for (var i = 0; i < savedComments.length; i++) {
+      if (targetId === savedComments[i].id) {
+        checkIdeasArray(savedComments[i].parentId, targetId)
+        savedComments[i].deleteFromStorage()
+        savedComments.splice(i, 1)
+        showIdeas(savedIdeas.sort(compareId));
+      }
+    }
+    modal.style.display = 'none'
+  }
+}
+
+function checkIdeasArray(id, targetId) {
+  for (var i = 0; i < savedIdeas.length; i++) {
+    if (savedIdeas[i].id === id) {
+      for (var j = 0; j < savedIdeas[i].comments.length; j++) {
+        if (savedIdeas[i].comments[j].id === targetId) {
+          savedIdeas[i].comments.splice(j, 1)
+        }
+      }
     }
   }
 }

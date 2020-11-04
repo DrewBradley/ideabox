@@ -167,7 +167,7 @@ p {
   margin: 0%;
   padding: 3%;
   font-size: 1.5em;
-  overflow: scroll;
+  overflow: auto;
 }
 
 .idea-title {
@@ -219,6 +219,34 @@ p {
   width: 25%;
   animation-name: animatetop;
   animation-duration: 0.4s;
+}
+
+.comment-display {
+  position: relative;
+  background-color: white;
+  padding: 20px;
+  margin: auto;
+  width: 25%;
+  animation-name: animatetop;
+  animation-duration: 0.4s;
+}
+
+.comment-header {
+  position: relative;
+  background-color: white;
+  padding: 20px;
+  margin: auto;
+  width: 25%;
+  animation-name: animatetop;
+  animation-duration: 0.4s;
+}
+
+.comment-delete {
+  margin-left: auto;
+}
+
+.comment-delete:hover {
+  cursor: pointer;
 }
 
 .close-button {
